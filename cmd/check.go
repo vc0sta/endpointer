@@ -13,13 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package check
+package cmd
 
 import (
 	"fmt"
 
-	"github.com/d1m3/endpointer/cmd/check/http"
-	"github.com/d1m3/endpointer/cmd/check/postgres"
+	"github.com/d1m3/endpointer/cmd/check"
+	// "github.com/d1m3/endpointer/cmd/check/postgres"
 	"github.com/spf13/cobra"
 )
 
@@ -34,6 +34,8 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.AddCommand(postgres.Cmd)
-	Cmd.AddCommand(http.Cmd)
+
+	Cmd.AddCommand(check.PostgresCmd, check.HttpCmd)
+	// Cmd.AddCommand(check.HttpCmd)
+	rootCmd.AddCommand(Cmd)
 }

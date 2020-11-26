@@ -1,5 +1,4 @@
-/*
-Copyright © 2020 NAME HERE vinicius.costa.92@gmail.com
+/*Copyright © 2020 NAME HERE vinicius.costa.92@gmail.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package http
+package check
 
 import (
 	"log"
@@ -24,39 +23,34 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	address string
-	watch   bool
-	timeout int
-	args    []string
+var instructions = `Check if a http/https is reachable.
+It will not test if the returning code is 2XX.`
 
-	exitCode int
-)
-
-var Cmd = &cobra.Command{
-	Use:   "http",
-	Short: "http resource",
-	Long:  "Checks wether a https endpoint is getting a valid response or not.",
+var HttpCmd = &cobra.Command{
+	Use:     "http <url>",
+	Short:   "check http/https endpoints",
+	Args:    cobra.ExactArgs(1),
+	Long:    instructions,
+	Example: "endpointer check http https://google.com",
 	Run: func(cmd *cobra.Command, args []string) {
-		httpCheck()
+		httpCheck(args)
 	},
 }
 
 func init() {
-	// Cmd.Flags().StringVar(&address, "address", "localhost", "target postgres instance")
-	Cmd.Flags().BoolVar(&watch, "watch", false, "keep watching command, retries connection each 2s.")
-	Cmd.Flags().IntVar(&timeout, "timeout", 3600, "how many seconds should a watch run")
+	HttpCmd.Flags().BoolVar(&watch, "watch", false, "keep watching command, retries connection each 2s.")
+	HttpCmd.Flags().IntVar(&timeout, "timeout", 3600, "how many seconds should a watch run")
 
-	args = Cmd.Flags().Args()
+}
+
+func httpCheck(args []string) {
+
 	if len(args) > 0 {
 		address = args[0]
 	} else {
-		log.Println(Cmd.Long)
+		log.Println(instructions)
 		os.Exit(1)
 	}
-}
-
-func httpCheck() {
 
 	c1 := make(chan int, 1)
 	go func() {
