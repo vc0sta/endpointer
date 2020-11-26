@@ -16,8 +16,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/d1m3/endpointer/cmd/check"
 	// "github.com/d1m3/endpointer/cmd/check/postgres"
 	"github.com/spf13/cobra"
@@ -28,8 +26,9 @@ var Cmd = &cobra.Command{
 	Use:   "check",
 	Short: "Checks if a given resource is responding correctly",
 	Long:  `You can check if any of the given resources are responding correctly`,
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("check called")
+
 	},
 }
 
