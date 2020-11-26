@@ -13,18 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package check
 
 import (
 	"fmt"
 
+	"github.com/d1m3/endpointer/cmd/check/http"
+	"github.com/d1m3/endpointer/cmd/check/postgres"
 	"github.com/spf13/cobra"
-
-	"github.com/d1m3/endpointer/cmd/check"
 )
 
 // checkCmd represents the check command
-var checkCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "check",
 	Short: "Checks if a given resource is responding correctly",
 	Long:  `You can check if any of the given resources are responding correctly`,
@@ -34,6 +34,6 @@ var checkCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(checkCmd)
-	checkCmd.AddCommand(check.PostgresCmd)
+	Cmd.AddCommand(postgres.Cmd)
+	Cmd.AddCommand(http.Cmd)
 }

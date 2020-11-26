@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package check
+package postgres
 
 import (
 	"context"
@@ -33,11 +33,12 @@ var (
 	database string
 	watch    bool
 	timeout  int
+	args     []string
 
 	exitCode int
 )
 
-var PostgresCmd = &cobra.Command{
+var Cmd = &cobra.Command{
 	Use:   "postgres",
 	Short: "postgres resource",
 	Long:  "Prints stuff about the user. You could also use the flags in your addPartner() function",
@@ -47,13 +48,21 @@ var PostgresCmd = &cobra.Command{
 }
 
 func init() {
-	PostgresCmd.Flags().StringVar(&address, "address", "localhost", "target postgres instance")
-	PostgresCmd.Flags().StringVar(&port, "port", "5432", "target postgres port")
-	PostgresCmd.Flags().StringVar(&user, "user", "postgres", "target postgres user")
-	PostgresCmd.Flags().StringVar(&password, "password", "postgres", "target users password")
-	PostgresCmd.Flags().StringVar(&database, "database", "postgres", "target database")
-	PostgresCmd.Flags().BoolVar(&watch, "watch", false, "keep watching command, retries connection each 2s.")
-	PostgresCmd.Flags().IntVar(&timeout, "timeout", 3600, "how many seconds should a watch run")
+	Cmd.Flags().StringVar(&port, "port", "5432", "target postgres port")
+	Cmd.Flags().StringVar(&user, "user", "postgres", "target postgres user")
+	Cmd.Flags().StringVar(&password, "password", "postgres", "target users password")
+	Cmd.Flags().StringVar(&database, "database", "postgres", "target database")
+	Cmd.Flags().BoolVar(&watch, "watch", false, "keep watching command, retries connection each 2s.")
+	Cmd.Flags().IntVar(&timeout, "timeout", 3600, "how many seconds should a watch run")
+
+	args = Cmd.Flags().Args()
+	if len(args) > 0 {
+		address = args[0]
+	} else {
+		log.Println(Cmd.Long)
+		os.Exit(1)
+	}
+
 }
 
 func postgresCheck() {
