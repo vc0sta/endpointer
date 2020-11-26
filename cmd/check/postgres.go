@@ -16,6 +16,7 @@ limitations under the License.
 package check
 
 import (
+	"context"
 	"log"
 	"os"
 	"time"
@@ -67,9 +68,10 @@ func postgresCheck() {
 				Password: password,
 				Database: database,
 			})
-			_, err := pgdb.Exec("SELECT 1")
 
-			if err != nil {
+			ctx := context.Background()
+
+			if err := pgdb.Ping(ctx); err != nil {
 				log.Println(err)
 				exitCode = 1
 			} else {
