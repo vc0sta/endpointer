@@ -23,8 +23,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var instructions = `Check if a http/https is reachable.
-It will not test if the returning code is 2XX.`
+var instructions = `Check if a http/https is reachable.`
 
 var HttpCmd = &cobra.Command{
 	Use:     "http <url>",
