@@ -40,7 +40,7 @@ var HttpCmd = &cobra.Command{
 func init() {
 	HttpCmd.Flags().BoolVar(&watch, "watch", false, "keep watching command, retries connection each 2s.")
 	HttpCmd.Flags().IntVar(&timeout, "timeout", 3600, "how many seconds should a watch run")
-
+	HttpCmd.Flags().IntVar(&statusCode, "code", 200, "which status code should be returned")
 }
 
 func httpCheck(args []string) {
@@ -61,9 +61,13 @@ func httpCheck(args []string) {
 				log.Println(err)
 				exitCode = 1
 			} else {
-				log.Printf("Connection sucessful!\n%d: %s", response.StatusCode, response.Status)
-				exitCode = 0
-				watch = false
+				if response.StatusCode == statusCode {
+					log.Printf("Connection sucessful!\n%d: %s", response.StatusCode, response.Status)
+					exitCode = 0
+					watch = false
+				} else {
+					log.Printf("Status code not valid: %d", response.StatusCode)
+				}
 			}
 
 			if watch == false {
