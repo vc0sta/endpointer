@@ -41,7 +41,7 @@ var MYSQLCmd = &cobra.Command{
 
 func init() {
 	MYSQLCmd.Flags().StringVar(&port, "port", "3306", "target mysql port")
-	MYSQLCmd.Flags().StringVar(&username, "username", "root", "target mysql username")
+	MYSQLCmd.Flags().StringVar(&user, "user", "root", "target mysql username")
 	MYSQLCmd.Flags().StringVar(&password, "password", "password", "target users password")
 	MYSQLCmd.Flags().StringVar(&database, "database", "database", "target database")
 	MYSQLCmd.Flags().BoolVar(&watch, "watch", false, "keep watching command, retries connection each 2s.")
@@ -64,7 +64,7 @@ func mysqlCheck(args []string) {
 	go func() {
 
 		for{
-		db, err := sql.Open("mysql", username + ":" + password + "@tcp(" + address + ":" + port + ")/"  + database)
+		db, err := sql.Open("mysql", user + ":" + password + "@tcp(" + address + ":" + port + ")/"  + database)
 
 		if err != nil {
 			log.Println(err)
