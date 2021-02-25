@@ -34,7 +34,7 @@ var Cmd = &cobra.Command{
 
 func init() {
 
-	Cmd.AddCommand(check.PostgresCmd, check.HttpCmd)
+	Cmd.AddCommand(check.PostgresCmd, check.HttpCmd, check.MYSQLCmd)
 	// Cmd.AddCommand(check.HttpCmd)
 	rootCmd.AddCommand(Cmd)
 }
